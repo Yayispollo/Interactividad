@@ -4,9 +4,11 @@ function setup(){
 
 function draw(){
     background(30,70, 200);
-    Stroke(0,0,0);
-    strokeweight(5);
-    fill(255, 0, 0);
+    strokeWeight(10);
+    fill_color = map(mouseX, 0, windowWidth, 0, 255);
+    fill_color2 = map(mouseY,0, windowHeight, 0, 100);
+    stroke(0,0,0);
+    fill(mouseX, mouseY,50);
   ellipse(mouseX, mouseY, 50, 50);
 }
 /*
