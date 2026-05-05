@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experiencia Cámara Inmersiva</title>
+    <title>La camara de Yayis</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Arial', sans-serif;
             background: #000;
-            height: 200vh; /* Solo necesitamos un poco de scroll para activar la magia */
+            height: 200vh;
             overflow-x: hidden;
         }
 
-        /* Contenedor principal que se queda fijo */
         .stage {
             position: sticky;
             top: 0;
@@ -24,6 +23,20 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            /* Aquí ponemos la imagen de fondo */
+            background-image: url('img/tu-imagen-de-fondo.jpg'); /* <--- CAMBIA POR TU IMAGEN */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Capa oscura para que las fotos resalten sobre el fondo */
+        .stage::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
         }
 
         /* Cámara */
@@ -33,6 +46,19 @@
             object-fit: contain;
             will-change: transform;
             z-index: 10;
+            transform-origin: 66% 50%;
+        }
+
+        .intro-text {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            z-index: 20;
         }
 
         /* Galería */
@@ -40,7 +66,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            z-index: 5; /* Por encima del fondo pero debajo del texto */
         }
 
         .gallery-item {
@@ -49,27 +75,20 @@
             height: 280px;
             border: 5px solid white;
             border-radius: 10px;
-            opacity: 0; /* Invisibles al inicio */
+            opacity: 0;
             transition: opacity 0.3s ease;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Posiciones fijas de las fotos */
-        .gallery-item:nth-child(1) { top: 10%; left: 10%; transform: rotate(-5deg); }
+        /* Posiciones fijas */
+        .gallery-item:nth-child(1) { top: 10%; left: 35%; transform: rotate(-5deg); }
         .gallery-item:nth-child(2) { top: 10%; right: 10%; transform: rotate(5deg); }
-        .gallery-item:nth-child(3) { top: 60%; left: 20%; transform: rotate(2deg); }
-        .gallery-item:nth-child(4) { top: 60%; right: 20%; transform: rotate(-2deg); }
-        .gallery-item:nth-child(5) { top: 35%; left: 40%; transform: rotate(0deg); }
-
-        .intro-text {
-            position: absolute;
-            color: white;
-            z-index: 20;
-            text-align: center;
-            pointer-events: none;
-        }
+        .gallery-item:nth-child(3) { top: 45%; left: 20%; transform: rotate(2deg); }
+        .gallery-item:nth-child(4) { top: 50%; right: 20%; transform: rotate(-2deg); }
+        .gallery-item:nth-child(5) { top: 35%; left: 50%; transform: rotate(0deg); }
+        .gallery-item:nth-child(6) { top: 10%; left: 10%; transform: rotate(-5deg); }
     </style>
 </head>
 <body>
@@ -86,8 +105,9 @@
             <div class="gallery-item"><img src="img/bren_edit.png" alt="1"></div>
             <div class="gallery-item"><img src="img/edit_tilin.png" alt="2"></div>
             <div class="gallery-item"><img src="img/eli_edit.png" alt="3"></div>
-            <div class="gallery-item"><img src="img/fri_edit.png" alt="imagen 4"></div>
-            <div class="gallery-item"><img src="img/DSC01201.JPG" alt="imagen 5"></div>
+            <div class="gallery-item"><img src="img/fri_edit.png" alt="4"></div>
+            <div class="gallery-item"><img src="img/DSC01201.JPG" alt="5"></div>
+            <div class="gallery-item"><img src="img/DSC01214.JPG" alt="6"></div>
         </div>
     </section>
 
@@ -99,7 +119,6 @@
         function animate() {
             const scrollTop = window.scrollY;
             
-            // Zoom: el zoom termina a los 800px de scroll
             const zoomProgress = Math.min(scrollTop / 800, 1);
             const scale = 1 + (zoomProgress * 15);
             
@@ -107,7 +126,6 @@
             cameraImage.style.opacity = 1 - zoomProgress;
             introText.style.opacity = 1 - (zoomProgress * 3);
 
-            // Aparecer fotos: empiezan a aparecer cuando zoomProgress > 0.4
             galleryItems.forEach((item) => {
                 if (zoomProgress > 0.4) {
                     item.style.opacity = (zoomProgress - 0.4) * 2;
@@ -118,7 +136,6 @@
 
             requestAnimationFrame(animate);
         }
-
         animate();
     </script>
 </body>

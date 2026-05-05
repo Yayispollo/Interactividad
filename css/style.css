@@ -49,16 +49,18 @@ body {
 
 /* ==================== SECCIÓN 2: GALERÍA ==================== */
 
+/* Nueva clase para el fondo de la galería */
 .gallery-section {
-  position: sticky; /* Cambiado a sticky */
-        top: 0;
-        height: 100vh;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* O la altura que desees */
+    background-image: url('img/background.jpg'); /* RUTA DE TU IMAGEN */
+    background-size: cover;      /* Hace que la imagen cubra todo el espacio */
+    background-position: center; /* Centra la imagen */
+    background-attachment: fixed; /* Opcional: hace que el fondo se quede quieto al hacer scroll */
+    background-repeat: no-repeat;
+    z-index: 1; /* Detrás de los elementos interactivos */
+}
 
 .gallery-container {
     position: relative;
@@ -94,13 +96,17 @@ body {
 
 .gallery-item {
     position: absolute;
-        width: 250px;
-        height: 350px;
-        transition: opacity 0.5s ease;
-        opacity: 0; /* Inician invisibles */
-        pointer-events: none;
-    
+    width: 200px;
+    height: 280px;
+    border: 5px solid white;
+    border-radius: 10px;
+    opacity: 0;
+    /* QUITAMOS EL TRANSITION AQUÍ para que el parallax no se sienta "lento" */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    will-change: transform; /* Esto hace que el movimiento sea ultra fluido */
 }
+    
+
 
 .gallery-item:nth-child(1) { 
     top: 10%; 
@@ -153,17 +159,17 @@ body {
 /* ==================== TEXTO INTRODUCTORIO ==================== */
 
 .intro-text {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    z-index: 10;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
+            position: absolute;
+            top: 80%; /* Mueve el texto hacia la parte inferior */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            z-index: 20;
+            text-align: center;
+            pointer-events: none;
+            width: 90%; /* Ajuste para asegurar visibilidad */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Añade un poco de sombra para que se lea mejor */
+        }
 
 .intro-text h1 {
     font-size: 3em;
