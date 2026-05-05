@@ -195,3 +195,27 @@ if (isMobile()) {
         item.style.transition = 'transform 0.1s ease-out';
     });
 }
+function updateGallery() {
+    const scrollTop = window.scrollY;
+    const galleryStart = window.innerHeight;
+    const distance = Math.max(0, scrollTop - galleryStart);
+
+    galleryItems.forEach((item, index) => {
+        // Calculamos el desplazamiento de scroll
+        const speed = 0.2 + (index * 0.05);
+        const scrollY = distance * speed;
+        
+        // Calculamos el sutil movimiento del mouse
+        const mouseMoveX = (mouseX - window.innerWidth / 2) * 0.02;
+        const mouseMoveY = (mouseY - window.innerHeight / 2) * 0.02;
+
+        // Combinamos ambos en una sola cadena de transformación
+        const rotation = (distance * 0.02) + (index * 45);
+        item.style.transform = `translate(${mouseMoveX}px, ${scrollY + mouseMoveY}px) rotate(${rotation}deg)`;
+    });
+
+    requestAnimationFrame(updateGallery);
+}
+
+// Iniciar el loop de animación
+requestAnimationFrame(updateGallery);

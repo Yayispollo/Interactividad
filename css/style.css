@@ -14,27 +14,19 @@ body {
 /* ==================== SECCIÓN 1: CÁMARA ==================== */
 
 .camera-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.camera-container {
-    perspective: 1000px;
+    position: sticky; /* Mantiene la cámara fija mientras haces scroll */
+    top: 0;
+    z-index: 5;
 }
 
 .camera-image {
-    width: 300px;
-    height: 300px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect fill="%23FFB6D9" width="300" height="300" rx="20"/><circle cx="150" cy="150" r="80" fill="%23C0C0C0"/><circle cx="150" cy="150" r="70" fill="%23808080"/><circle cx="150" cy="150" r="50" fill="%23000000"/><circle cx="150" cy="150" r="40" fill="%23004B00"/></svg>');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: transform 0.1s ease-out;
-    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.3));
+    /* ... tus estilos ... */
+    will-change: transform; /* Avisa al navegador para optimizar la animación */
+}
+
+
+.camera-container {
+    perspective: 1000px;
 }
 
 .camera-image.zoomed {
@@ -58,14 +50,15 @@ body {
 /* ==================== SECCIÓN 2: GALERÍA ==================== */
 
 .gallery-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    overflow: hidden;
-}
+  position: sticky; /* Cambiado a sticky */
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
 
 .gallery-container {
     position: relative;
@@ -101,20 +94,12 @@ body {
 
 .gallery-item {
     position: absolute;
-    width: 150px;
-    height: 150px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    font-weight: bold;
-    color: #FF1493;
-    border: 3px solid #FFB6D9;
-    transition: transform 0.05s ease-out;
+        width: 250px;
+        height: 350px;
+        transition: opacity 0.5s ease;
+        opacity: 0; /* Inician invisibles */
+        pointer-events: none;
+    
 }
 
 .gallery-item:nth-child(1) { 
