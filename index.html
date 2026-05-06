@@ -10,7 +10,7 @@
         body {
             font-family: 'Arial', sans-serif;
             background: #000;
-            height: 200vh;
+            height: 250vh; 
             overflow-x: hidden;
         }
 
@@ -23,119 +23,168 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            /* Aquí ponemos la imagen de fondo */
-            background-image: url('img/tu-imagen-de-fondo.jpg'); /* <--- CAMBIA POR TU IMAGEN */
-            background-size: cover;
-            background-position: center;
+            background: #000; /* Fondo inicial negro */
         }
 
-        /* Capa oscura para que las fotos resalten sobre el fondo */
+        /* FONDO DE LA GALERÍA (El que quieres agregar) */
+        .gallery-bg {
+            position: absolute;
+            top: -5%; left: -5%; /* Un poco más grande para que no se vean bordes al mover */
+            width: 110%; height: 110%;
+            background-image: url('img/background.jpg'); /* <--- CAMBIA POR TU IMAGEN DE FONDO */
+            background-size: cover;
+            background-position: center;
+            z-index: 2;
+            opacity: 0; /* Empieza invisible */
+            filter: brightness(0.5); /* Un poco oscuro para que resalten las fotos */
+            transition: opacity 0.2s ease;
+            will-change: transform;
+        }
+
+        /* Capa oscura superior para la cámara inicial */
         .stage::before {
             content: "";
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 15;
+            pointer-events: none;
         }
 
-        /* Cámara */
         .camera-image {
             width: 300px;
             height: 300px;
             object-fit: contain;
             will-change: transform;
-            z-index: 10;
+            z-index: 20;
             transform-origin: 66% 50%;
+            pointer-events: none;
         }
 
         .intro-text {
             position: absolute;
-            top: 70%;
+            top: 75%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
             text-align: center;
             pointer-events: none;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            z-index: 20;
+            text-shadow: 0 2px 10px rgba(0,0,0,1);
+            z-index: 25;
         }
 
-        /* Galería */
+        /* Contenedor de fotos */
         .gallery-container {
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: 5; /* Por encima del fondo pero debajo del texto */
+            z-index: 10;
+            perspective: 1000px;
         }
 
         .gallery-item {
             position: absolute;
-            width: 200px;
-            height: 280px;
-            border: 5px solid white;
-            border-radius: 10px;
+            width: 220px;
+            height: 300px;
+            border: 6px solid white;
+            border-radius: 4px;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            --move-x: 0px;
+            --move-y: 0px;
+            transform: translate(var(--move-x), var(--move-y)) rotate(var(--rot));
+            will-change: transform, opacity;
         }
 
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Posiciones fijas */
-        .gallery-item:nth-child(1) { top: 10%; left: 35%; transform: rotate(-5deg); }
-        .gallery-item:nth-child(2) { top: 10%; right: 10%; transform: rotate(5deg); }
-        .gallery-item:nth-child(3) { top: 45%; left: 20%; transform: rotate(2deg); }
-        .gallery-item:nth-child(4) { top: 50%; right: 20%; transform: rotate(-2deg); }
-        .gallery-item:nth-child(5) { top: 35%; left: 50%; transform: rotate(0deg); }
-        .gallery-item:nth-child(6) { top: 10%; left: 10%; transform: rotate(-5deg); }
+        /* Posiciones */
+        .gallery-item:nth-child(1) { top: 10%; left: 40%; --rot: -8deg; }
+        .gallery-item:nth-child(2) { top: 10%; right: 15%; --rot: 6deg; }
+        .gallery-item:nth-child(3) { top: 55%; left: 10%; --rot: -5deg; }
+        .gallery-item:nth-child(4) { top: 50%; right: 45%; --rot: 10deg; }
+        .gallery-item:nth-child(5) { top: 15%; left: 15%; --rot: 2deg; }
+        .gallery-item:nth-child(6) { top: 55%; left: 70%; --rot: -3deg; }
     </style>
 </head>
 <body>
-
+<meta charset="UTF-8">
+    <title>La camara de Yayis</title>
+    <!-- Agrega esta línea: -->
+    <link rel="icon" href="img/favicon_io (2).zip" type="image/png">
     <section class="stage">
+        <!-- El nuevo fondo de la galería -->
+        <div class="gallery-bg" id="galleryBg"></div>
+
         <div class="intro-text" id="introText">
-            <h1>Galería de Yayis</h1>
-            <p>Haz scroll para entrar en el lente</p>
+            <h1>La cámara de Yayis</h1>
+            <p>Haz scroll para echar un vistazo al lente</p>
         </div>
 
         <img src="img/camarayayis.png" id="cameraImage" class="camera-image" alt="Cámara">
 
         <div class="gallery-container" id="galleryItems">
-            <div class="gallery-item"><img src="img/bren_edit.png" alt="1"></div>
-            <div class="gallery-item"><img src="img/edit_tilin.png" alt="2"></div>
-            <div class="gallery-item"><img src="img/eli_edit.png" alt="3"></div>
-            <div class="gallery-item"><img src="img/fri_edit.png" alt="4"></div>
-            <div class="gallery-item"><img src="img/DSC01201.JPG" alt="5"></div>
-            <div class="gallery-item"><img src="img/DSC01214.JPG" alt="6"></div>
+            <div class="gallery-item" data-depth="0.05"><img src="img/bren_edit.png" alt="1"></div>
+            <div class="gallery-item" data-depth="0.15"><img src="img/edit_tilin.png" alt="2"></div>
+            <div class="gallery-item" data-depth="0.08"><img src="img/eli_edit.png" alt="3"></div>
+            <div class="gallery-item" data-depth="0.2"><img src="img/fri_edit.png" alt="4"></div>
+            <div class="gallery-item" data-depth="0.12"><img src="img/DSC01201.JPG" alt="5"></div>
+            <div class="gallery-item" data-depth="0.06"><img src="img/DSC01214.JPG" alt="6"></div>
         </div>
     </section>
 
     <script>
         const cameraImage = document.getElementById('cameraImage');
         const introText = document.getElementById('introText');
+        const galleryBg = document.getElementById('galleryBg');
         const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        let mouseX = 0;
+        let mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
 
         function animate() {
             const scrollTop = window.scrollY;
+            const zoomProgress = Math.min(scrollTop / 1000, 1);
             
-            const zoomProgress = Math.min(scrollTop / 800, 1);
-            const scale = 1 + (zoomProgress * 15);
-            
+            // Zoom de cámara
+            const scale = 1 + (zoomProgress * 20);
             cameraImage.style.transform = `scale(${scale})`;
-            cameraImage.style.opacity = 1 - zoomProgress;
-            introText.style.opacity = 1 - (zoomProgress * 3);
+            cameraImage.style.opacity = 1 - (zoomProgress * 1.5);
+            introText.style.opacity = 1 - (zoomProgress * 4);
 
-            galleryItems.forEach((item) => {
-                if (zoomProgress > 0.4) {
-                    item.style.opacity = (zoomProgress - 0.4) * 2;
-                } else {
-                    item.style.opacity = 0;
-                }
-            });
+            // Aparecer fondo y fotos
+            if (zoomProgress > 0.3) {
+                const revealOpacity = (zoomProgress - 0.3) * 2;
+                galleryBg.style.opacity = revealOpacity;
+                
+                // Efecto Parallax en el FONDO (se mueve muy sutilmente)
+                const bgMoveX = mouseX * 30; 
+                const bgMoveY = mouseY * 30;
+                galleryBg.style.transform = `translate(${bgMoveX}px, ${bgMoveY}px)`;
+
+                // Efecto Parallax en las FOTOS
+                galleryItems.forEach((item) => {
+                    item.style.opacity = revealOpacity;
+                    const depth = parseFloat(item.getAttribute('data-depth'));
+                    const moveX = mouseX * (depth * 500);
+                    const moveY = mouseY * (depth * 500);
+                    item.style.setProperty('--move-x', `${moveX}px`);
+                    item.style.setProperty('--move-y', `${moveY}px`);
+                });
+            } else {
+                galleryBg.style.opacity = 0;
+                galleryItems.forEach(item => item.style.opacity = 0);
+            }
 
             requestAnimationFrame(animate);
         }
+
         animate();
     </script>
 </body>
